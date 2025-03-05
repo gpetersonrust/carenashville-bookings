@@ -1,7 +1,11 @@
 <?php
+ 
+namespace Carenashville\Bookings;
+
 if (!defined('ABSPATH')) {
     exit; // Prevent direct file access
 }
+
 
 class  Activator {
     /**

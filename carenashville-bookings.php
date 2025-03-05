@@ -11,41 +11,42 @@
  * Domain Path: /languages
  */
 
+// Security check: Prevent direct access
 if (!defined('ABSPATH')) {
-    exit; // Prevent direct file access
+    exit;
 }
+// Use Statements for Cleaner Code
+use Carenashville\Bookings\Loader;
+use Carenashville\Bookings\Activator;
+use Carenashville\Bookings\Deactivator;
+use Carenashville\Bookings\Uninstall;
 
 // Define Plugin Constants
 define('CARENSHV_BOOKINGS_VERSION', '1.0.1');
 define('CARENSHV_BOOKINGS_PATH', plugin_dir_path(__FILE__));
 define('CARENSHV_BOOKINGS_URL', plugin_dir_url(__FILE__));
 
-// Autoload Classes
-spl_autoload_register(function ($class) {
-    $prefix = 'Carenashville\\Bookings\\';
-    $base_dir = __DIR__ . '/includes/';
+// Load Composer Autoloader
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
+require_once CARENSHV_BOOKINGS_PATH . 'includes/class-activator.php';
+require_once CARENSHV_BOOKINGS_PATH . 'includes/class-deactivator.php';
+require_once CARENSHV_BOOKINGS_PATH . 'includes/class-uninstall.php';
+require_once CARENSHV_BOOKINGS_PATH . 'includes/class-loader.php';
 
-    $relative_class = substr($class, $len);
-    $file = $base_dir . 'class-' . strtolower(str_replace('_', '-', $relative_class)) . '.php';
 
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+// Register Activation, Deactivation, and Uninstall Hooks
+// Register Activation, Deactivation, and Uninstall Hooks
+register_activation_hook(__FILE__, [Activator::class, 'activate']);
+register_deactivation_hook(__FILE__, [Deactivator::class, 'deactivate']);
+register_uninstall_hook(__FILE__, [Uninstall::class, 'uninstall']);
+
 
 // Initialize Plugin
 function run_carenashville_bookings() {
-    $plugin = new Carenashville\Bookings\Loader();
+    $plugin = new Loader();
     $plugin->run();
 }
 run_carenashville_bookings();
-
-// Register Activation, Deactivation, and Uninstall Hooks
-register_activation_hook(__FILE__, ['Carenashville\Bookings\Activator', 'activate']);
-register_deactivation_hook(__FILE__, ['Carenashville\Bookings\Deactivator', 'deactivate']);
-register_uninstall_hook(__FILE__, ['Carenashville\Bookings\Uninstall', 'uninstall']);

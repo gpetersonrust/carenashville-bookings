@@ -1,4 +1,6 @@
 <?php
+namespace Carenashville\Bookings;
+
 if (!defined('ABSPATH')) {
     exit;
 }
