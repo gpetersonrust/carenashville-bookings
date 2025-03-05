@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Carenashville_Deactivator {
+class  Deactivator {
     public static function deactivate() {
         delete_option('carenashville_settings');
     }

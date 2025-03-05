@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Carenashville_Uninstall {
+class  Uninstall {
     public static function uninstall() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'carenashville_bookings';
